@@ -8,11 +8,12 @@ import { env } from './config/env';
 import { logger } from './utils/logger';
 import { errorHandler, notFoundHandler } from './middlewares/error.middleware';
 import { apiRouter } from './routes';
+import { uploadsDir } from './middlewares/upload.middleware';
 
 export function createApp() {
   const app = express();
 
-  app.use(helmet());
+  app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
   app.use(
     cors({
       origin: env.CORS_ORIGIN,
@@ -37,6 +38,7 @@ export function createApp() {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
+  app.use('/uploads', express.static(uploadsDir));
   app.use('/api', apiRouter);
 
   app.use(notFoundHandler);

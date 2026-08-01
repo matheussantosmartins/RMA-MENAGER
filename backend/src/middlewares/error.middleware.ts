@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
+import { MulterError } from 'multer';
 import { ApiError } from '../utils/apiError';
 import { logger } from '../utils/logger';
 
@@ -18,6 +19,11 @@ export function errorHandler(err: unknown, req: Request, res: Response, _next: N
 
   if (err instanceof ApiError) {
     res.status(err.statusCode).json({ message: err.message, details: err.details });
+    return;
+  }
+
+  if (err instanceof MulterError) {
+    res.status(400).json({ message: `Erro no upload: ${err.message}` });
     return;
   }
 
