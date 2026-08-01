@@ -15,6 +15,12 @@ const DashboardPage = lazy(() =>
 const RmasPage = lazy(() =>
   import('./features/rmas/RmasPage').then((m) => ({ default: m.RmasPage })),
 );
+const RmaFormPage = lazy(() =>
+  import('./features/rmas/RmaFormPage').then((m) => ({ default: m.RmaFormPage })),
+);
+const RmaDetailPage = lazy(() =>
+  import('./features/rmas/RmaDetailPage').then((m) => ({ default: m.RmaDetailPage })),
+);
 const CustomersPage = lazy(() =>
   import('./features/customers/CustomersPage').then((m) => ({ default: m.CustomersPage })),
 );
@@ -35,6 +41,9 @@ export function App() {
           <Route element={<AppLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="rmas" element={<RmasPage />} />
+            <Route path="rmas/new" element={<RmaFormPage />} />
+            <Route path="rmas/:id" element={<RmaDetailPage />} />
+            <Route path="rmas/:id/edit" element={<RmaFormPage />} />
             <Route path="customers" element={<CustomersPage />} />
             <Route path="products" element={<ProductsPage />} />
             <Route element={<AdminRoute />}>
