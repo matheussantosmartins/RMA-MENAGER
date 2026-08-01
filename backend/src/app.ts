@@ -4,11 +4,13 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import pinoHttp from 'pino-http';
+import swaggerUi from 'swagger-ui-express';
 import { env } from './config/env';
 import { logger } from './utils/logger';
 import { errorHandler, notFoundHandler } from './middlewares/error.middleware';
 import { apiRouter } from './routes';
 import { uploadsDir } from './middlewares/upload.middleware';
+import { swaggerSpec, swaggerUiOptions } from './config/swagger';
 
 export function createApp() {
   const app = express();
@@ -39,6 +41,7 @@ export function createApp() {
   });
 
   app.use('/uploads', express.static(uploadsDir));
+  app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions));
   app.use('/api', apiRouter);
 
   app.use(notFoundHandler);

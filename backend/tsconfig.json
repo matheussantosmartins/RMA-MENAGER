@@ -5,6 +5,7 @@
     "moduleResolution": "Node",
     "outDir": "dist",
     "rootDir": "src",
+    "removeComments": false,
     "lib": ["ES2022"],
     "types": ["node", "jest"],
     "baseUrl": "src",
