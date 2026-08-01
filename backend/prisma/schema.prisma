@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  TECHNICIAN
+}
+
+enum RmaStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  IN_REPAIR
+  REPAIRED
+  REPLACED
+  REFUNDED
+  CLOSED
+  CANCELLED
+}
+
+enum RmaPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(TECHNICIAN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  createdRmas    Rma[]              @relation("RmaCreatedBy")
+  assignedRmas   Rma[]              @relation("RmaAssignedTo")
+  statusChanges  RmaStatusHistory[] @relation("StatusChangedBy")
+
+  @@map("users")
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rmas Rma[]
+
+  @@index([name])
+  @@map("customers")
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  sku       String   @unique
+  name      String
+  brand     String?
+  category  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rmas Rma[]
+
+  @@index([name])
+  @@map("products")
+}
+
+model Rma {
+  id               String      @id @default(uuid())
+  rmaNumber        String      @unique
+  customerId       String
+  productId        String
+  serialNumber     String?
+  issueDescription String
+  status           RmaStatus   @default(PENDING)
+  priority         RmaPriority @default(MEDIUM)
+  resolutionNotes  String?
+  assignedToId     String?
+  createdById      String
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  customer      Customer           @relation(fields: [customerId], references: [id])
+  product       Product            @relation(fields: [productId], references: [id])
+  assignedTo    User?              @relation("RmaAssignedTo", fields: [assignedToId], references: [id])
+  createdBy     User               @relation("RmaCreatedBy", fields: [createdById], references: [id])
+  images        RmaImage[]
+  statusHistory RmaStatusHistory[]
+
+  @@index([status])
+  @@index([priority])
+  @@index([customerId])
+  @@index([productId])
+  @@index([createdAt])
+  @@map("rmas")
+}
+
+model RmaImage {
+  id        String   @id @default(uuid())
+  rmaId     String
+  url       String
+  filename  String
+  createdAt DateTime @default(now())
+
+  rma Rma @relation(fields: [rmaId], references: [id], onDelete: Cascade)
+
+  @@map("rma_images")
+}
+
+model RmaStatusHistory {
+  id           String    @id @default(uuid())
+  rmaId        String
+  fromStatus   RmaStatus?
+  toStatus     RmaStatus
+  changedById  String
+  note         String?
+  createdAt    DateTime  @default(now())
+
+  rma       Rma  @relation(fields: [rmaId], references: [id], onDelete: Cascade)
+  changedBy User @relation("StatusChangedBy", fields: [changedById], references: [id])
+
+  @@index([rmaId])
+  @@map("rma_status_history")
+}
