@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/build
+**/coverage
+.git
+.github
+backend/uploads
+!backend/uploads/.gitkeep
+**/.env
+**/.env.local
+*.md
+.vscode
+.idea

@@ -4,6 +4,12 @@ import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
+  const existingRmaCount = await prisma.rma.count();
+  if (existingRmaCount > 0) {
+    console.log('Seed já aplicado anteriormente, pulando.');
+    return;
+  }
+
   const passwordHash = await bcrypt.hash('Password123!', 10);
 
   const admin = await prisma.user.upsert({
@@ -30,9 +36,24 @@ async function main() {
 
   const customers = await Promise.all(
     [
-      { name: 'Ana Silva', email: 'ana.silva@example.com', phone: '11988887777', address: 'São Paulo, SP' },
-      { name: 'Bruno Costa', email: 'bruno.costa@example.com', phone: '21977776666', address: 'Rio de Janeiro, RJ' },
-      { name: 'Carla Souza', email: 'carla.souza@example.com', phone: '31966665555', address: 'Belo Horizonte, MG' },
+      {
+        name: 'Ana Silva',
+        email: 'ana.silva@example.com',
+        phone: '11988887777',
+        address: 'São Paulo, SP',
+      },
+      {
+        name: 'Bruno Costa',
+        email: 'bruno.costa@example.com',
+        phone: '21977776666',
+        address: 'Rio de Janeiro, RJ',
+      },
+      {
+        name: 'Carla Souza',
+        email: 'carla.souza@example.com',
+        phone: '31966665555',
+        address: 'Belo Horizonte, MG',
+      },
     ].map((c) => prisma.customer.create({ data: c })),
   );
 
