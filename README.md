@@ -155,10 +155,10 @@ Raiz do projeto (`.env`, opcional, veja `.env.example`): sobrescreve os segredos
 
 Populadas automaticamente pelo seed:
 
-| Perfil        | E-mail                   | Senha          |
-| ------------- | ------------------------ | -------------- |
-| Administrador | `admin@rmamanager.com`   | `Password123!` |
-| Técnico       | `tecnico@rmamanager.com` | `Password123!` |
+| Perfil        | E-mail                   |
+| ------------- | ------------------------ |
+| Administrador | `admin@rmamanager.com`   |
+| Técnico       | `tecnico@rmamanager.com` |
 
 ## Documentação da API
 
