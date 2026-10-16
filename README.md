@@ -14,8 +14,20 @@ Projeto full stack construído do zero como peça de portfólio, seguindo arquit
   <img alt="License" src="https://img.shields.io/badge/license-MIT-informational">
 </p>
 
-> Substitua `SEU_USUARIO` pelo seu usuário do GitHub após publicar o repositório para o badge de CI funcionar:
-> `https://github.com/SEU_USUARIO/rma-manager/actions/workflows/ci.yml/badge.svg`
+##  Demonstração do Sistema
+
+### Dashboard
+![Dashboard](assets/screenshots/dashboard.png)
+
+### Gerenciamento de Garantias (RMAs)
+![Gerenciamento de RMAs](assets/screenshots/rmas.png)
+
+### Cadastro de Clientes
+![Cadastro de Clientes](assets/screenshots/clientes.png)
+
+### Catálogo de Produtos
+![Catálogo de Produtos](assets/screenshots/produtos.png)
+
 
 ## Sumário
 
@@ -215,4 +227,4 @@ Distribuído sob a licença MIT. Veja [LICENSE](LICENSE).
 
 ---
 
-Desenvolvido por **Matheus Martins** — adicione aqui os links do seu LinkedIn e GitHub
+Desenvolvido por **Matheus Martins** — [https://www.linkedin.com/in/matheus-martins-385039324/]
